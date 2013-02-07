@@ -7,6 +7,11 @@ class Board:
         self.board = dict(((i,j),j*n+i) for i in range(n) for j in range(n))
         self.gap_num = self.n**2 - 1
 
+    def copy(self):
+        b = Board(self.n)
+        b.board = self.board.copy()
+        return b
+
     def __repr__(self):
         res = ""
         for j in range(self.n):
