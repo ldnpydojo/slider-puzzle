@@ -5,14 +5,14 @@ class Board:
     def __init__(self, n):
         self.n = n
         self.board = dict(((i,j),j*n+i) for i in range(n) for j in range(n))
-        self.last = self.n**2 - 1
+        self.gap_num = self.n**2 - 1
 
     def __repr__(self):
         res = ""
         for j in range(self.n):
             for i in range(self.n):
                 number = self.board[(i,j)]
-                if number != self.last:
+                if number != self.gap_num:
                     res += "%s" % (number + 1)
                 else:
                     res += ' '
@@ -24,7 +24,7 @@ class Board:
         gap = None
         for j in  range(self.n):
             for i in range(self.n):
-                    if self.board[(i,j)] == self.last:
+                    if self.board[(i,j)] == self.gap_num:
                         gap = (i,j)
                         break
             if gap is not None:
@@ -54,7 +54,7 @@ class Board:
         for j in range(self.n):
             for i in range(self.n):
                 number = self.board[(i, j)]
-                if number != j*self.n + i and (number != self.last and i == self.n -1 and j == self.n -1):
+                if number != j*self.n + i and (number != self.gap_num and i == self.n -1 and j == self.n -1):
                     return False
         return True
 
