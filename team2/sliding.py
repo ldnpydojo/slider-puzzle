@@ -20,8 +20,7 @@ class Board:
         return res
 
 
-    def possible_moves(self):
-        res = [] 
+    def find_gap(self):
         gap = None
         for j in  range(self.n):
             for i in range(self.n):
@@ -31,7 +30,12 @@ class Board:
             if gap is not None:
                 break
         assert gap != None
+        return gap
 
+
+    def possible_moves(self):
+        res = []
+        gap = self.find_gap()
         (i,j) = gap
         if i >= 1:
             res.append((i-1, j))
@@ -54,17 +58,18 @@ class Board:
                     return False
         return True
 
-
-    def swap(self, a, b):
-        self.board[a], self.board[b] = self.board[b], self.board[a]
+    def slide(self, tile):
+        gap = b.find_gap()
+        self.board[tile], self.board[gap] = self.board[gap], self.board[tile]
 
 
 if __name__ == "__main__":
     b = Board(3)
     print b
     print b.check_if_finished()
-    b.swap((2, 1), (2, 2))
-    print b
     print b.possible_moves()
-    print b.check_if_finished()
 
+    while not b.check_if_finished():
+        moves = b.possible_moves()
+        b.slide(moves[0])
+        print b
