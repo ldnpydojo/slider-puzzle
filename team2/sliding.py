@@ -42,11 +42,13 @@ class Board:
         return res
 
 
-    def swap(self, a, b):#a pos ' ' b posn chosen square slidng
+    def swap(self, a, b):
         self.board[a], self.board[b] = self.board[b], self.board[a]
 
 if __name__ == "__main__":
     b = Board(3)
+    print b
+    b.swap((2, 1), (2, 2))
     print b
     print b.possible_moves()
 
