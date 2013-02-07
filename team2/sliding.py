@@ -31,11 +31,11 @@ class Board:
         (i,j) = gap
         if i >= 1:
             res.append((i-1, j))
-        if i < self.n:
+        if i < self.n-1:
             res.append((i+1, j))
         if j >= 1:  
             res.append((i, j-1))
-        if j < self.n:
+        if j < self.n-1:
             res.append((i, j+1))
         assert len(res) > 0
 
