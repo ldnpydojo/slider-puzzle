@@ -1,4 +1,5 @@
 import pprint
+import random
 
 class Board:
 
@@ -67,14 +68,39 @@ class Board:
         gap = b.find_gap()
         self.board[tile], self.board[gap] = self.board[gap], self.board[tile]
 
+class Solver:
+
+    def __init__(self):
+        self.stack = []
+        self.known = {}
+
+    def solve(self, board):
+        known = {}
+
+        queue = [board]
+
+        while len(queue):
+            current = queue[0]
+            print current
+            queue = queue[1:]
+
+            if current.check_if_finished():
+                break
+
+            for move in current.possible_moves():
+                new_board = current.copy().slide(move)
+                if not new_board in known:
+                    continue
+                queue.append(new_board)
+
+
 
 if __name__ == "__main__":
     b = Board(3)
-    print b
-    print b.check_if_finished()
-    print b.possible_moves()
-
-    while not b.check_if_finished():
+    for i in range(6):
         moves = b.possible_moves()
-        b.slide(moves[0])
-        print b
+        b.slide(random.choice(moves))
+
+    s = Solver()
+
+    s.solve(b)
