@@ -47,10 +47,13 @@ class Board:
     def swap(self, a, b):
         self.board[a], self.board[b] = self.board[b], self.board[a]
 
+    def check_if_finished(self):
+        return False
+
 if __name__ == "__main__":
     b = Board(3)
     print b
-    b.swap((2, 1), (2, 2))
-    print b
-    print b.possible_moves()
-
+    while not b.check_if_finished():
+        moves = b.possible_moves()
+        b.swap(b.find_gap(), moves[0])
+        print b
