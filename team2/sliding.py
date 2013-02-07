@@ -3,19 +3,22 @@ import random
 
 class Board:
 
-    def __init__(self, n):
+    def __init__(self, n, depth=0):
         self.n = n
+        self.depth = depth
         self.board = dict(((i,j),j*n+i) for i in range(n) for j in range(n))
         self.gap_num = self.n**2 - 1
 
     def copy(self):
-        b = Board(self.n)
+        b = Board(self.n, self.depth+1)
         b.board = self.board.copy()
         return b
 
     def __repr__(self):
+        indent = " "*self.depth
         res = ""
         for j in range(self.n):
+            res += indent
             for i in range(self.n):
                 number = self.board[(i,j)]
                 if number != self.gap_num:
@@ -25,13 +28,13 @@ class Board:
             res += "\n"
         return res
 
-
     def find_gap(self):
         gap = None
         for j in  range(self.n):
             for i in range(self.n):
-                    if self.board[(i,j)] == self.gap_num:
-                        gap = (i,j)
+                    pos = (i,j)
+                    if self.board[pos] == self.gap_num:
+                        gap = pos
                         break
             if gap is not None:
                 break
@@ -42,6 +45,8 @@ class Board:
     def possible_moves(self):
         res = []
         gap = self.find_gap()
+        print "gap:",gap
+
         (i,j) = gap
         if i >= 1:
             res.append((i-1, j))
@@ -60,7 +65,7 @@ class Board:
         for j in range(self.n):
             for i in range(self.n):
                 number = self.board[(i, j)]
-                if number != j*self.n + i and (number != self.gap_num and i == self.n -1 and j == self.n -1):
+                if number != j*self.n + i:
                     return False
         return True
 
@@ -68,6 +73,9 @@ class Board:
         gap = b.find_gap()
         self.board[tile], self.board[gap] = self.board[gap], self.board[tile]
         return self
+
+    def hash(self):
+        return str(sorted(self.board.items()))
 
 class Solver:
 
@@ -79,26 +87,32 @@ class Solver:
         known = {}
 
         queue = [board]
-
+        current = None
         while len(queue):
             current = queue[0]
             print current
+            print len(queue)
             queue = queue[1:]
 
             if current.check_if_finished():
+                print "board is finished"
                 break
-
+            current_hash = current.hash()
             for move in current.possible_moves():
+                print move
                 new_board = current.copy().slide(move)
-                if not new_board in known:
+                if current_hash in known or new_board in queue:
                     continue
                 queue.append(new_board)
+            known[current_hash] = True
+        print current
+        print current.check_if_finished()
 
 
 
 if __name__ == "__main__":
     b = Board(3)
-    for i in range(6):
+    for i in range(2):
         moves = b.possible_moves()
         b.slide(random.choice(moves))
 
