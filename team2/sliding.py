@@ -15,9 +15,7 @@ class Board:
             res += "\n"
         return res
 
-
-    def possible_moves(self):
-        res = []
+    def find_gap(self):
         gap = None
         for i in  range(self.n):
             for j in range(self.n):
@@ -27,7 +25,12 @@ class Board:
             if gap is not None:
                 break
         assert gap != None
+        return gap
 
+
+    def possible_moves(self):
+        res = []
+        gap = self.find_gap()
         (i,j) = gap
         if i >= 1:
             res.append((i-1, j))
@@ -40,7 +43,6 @@ class Board:
         assert len(res) > 0
 
         return res
-
 
     def swap(self, a, b):
         self.board[a], self.board[b] = self.board[b], self.board[a]
