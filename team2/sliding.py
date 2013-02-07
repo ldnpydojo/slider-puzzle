@@ -5,7 +5,7 @@ class Board:
     def __init__(self, n):
         self.n = n
         self.board = dict(((i,j),j*n+i+1) for i in range(n) for j in range(n))
-        self.board[(n-1,n-1)] = ' '  
+        self.board[(n-1,n-1)] = ' '
 
     def __repr__(self):
         res = ""
@@ -33,13 +33,17 @@ class Board:
             res.append((i-1, j))
         if i < self.n:
             res.append((i+1, j))
-        if j >= 1:  
+        if j >= 1:
             res.append((i, j-1))
         if j < self.n:
             res.append((i, j+1))
         assert len(res) > 0
 
         return res
+
+
+    def swap(self, a, b):#a pos ' ' b posn chosen square slidng
+        self.board[a], self.board[b] = self.board[b], self.board[a]
 
 if __name__ == "__main__":
     b = Board(3)
