@@ -44,8 +44,9 @@ class Board:
 
         return res
 
-    def swap(self, a, b):
-        self.board[a], self.board[b] = self.board[b], self.board[a]
+    def slide(self, tile):
+        gap = b.find_gap()
+        self.board[tile], self.board[gap] = self.board[gap], self.board[tile]
 
     def check_if_finished(self):
         return False
@@ -55,5 +56,5 @@ if __name__ == "__main__":
     print b
     while not b.check_if_finished():
         moves = b.possible_moves()
-        b.swap(b.find_gap(), moves[0])
+        b.slide(moves[0])
         print b
