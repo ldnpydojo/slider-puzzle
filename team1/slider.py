@@ -1,11 +1,13 @@
 from collections import defaultdict
 import random
 
+EMPTY = -1
+
 
 def random_board(n, randomize=random.shuffle):
     l = range(n ** 2 - 1)
     randomize(l)
-    l.append(-1)
+    l.append(EMPTY)
     b = defaultdict(dict)
     for i in range(n):
         for j in range(n):
@@ -26,4 +28,4 @@ def check_board(b):
     n = len(b)
     for i in range(n):
         for j in range(n):
-            assert b[i][j] == (-1 if i == n - 1 and j == n - 1 else i * n + j)
+            assert b[i][j] == (EMPTY if i == n - 1 and j == n - 1 else i * n + j)
