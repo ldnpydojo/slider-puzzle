@@ -27,8 +27,8 @@ class Board:
     def __init__(self, n=None, board=None, depth=0):
         self.n = n or int(math.sqrt(len(board)))
         self.depth = depth
-        self.board = dict(((i,j),j*n+i) for i in range(n) for j in range(n))
-        self.gap_num = self.n**2 - 1
+        self.board = board or dict(((i,j), self.correct_answer((i,j))) for i in range(self.n) for j in range(self.n))
+        self.gap_num = self.board[(self.n-1, self.n-1)]
 
     def copy(self):
         b = Board(self.n, self.depth+1)
