@@ -31,9 +31,12 @@ class Board:
         self.gap_num = self.board[(self.n-1, self.n-1)]
 
     def copy(self):
-        b = Board(self.n, self.depth+1)
-        b.board = self.board.copy()
-        return b
+        """
+        >>> b = Board(3)
+        >>> id(b) != id(b.copy())
+        True
+        """
+        return Board(self.n, self.board.copy(), self.depth+1)
 
     def __repr__(self):
         indent = " "*self.depth
