@@ -69,9 +69,12 @@ class Board:
 
 
     def possible_moves(self):
+        """
+        >>> Board(2).possible_moves()
+        [(0, 1), (1, 0)]
+        """
         res = []
         gap = self.find_gap()
-        print "gap:",gap
 
         (i,j) = gap
         if i >= 1:
@@ -87,7 +90,13 @@ class Board:
         return res
 
     def check_if_finished(self):
-        number_list = []
+        """
+        >>> Board.from_string('12 34').check_if_finished()
+        True
+        >>> Board.from_string('21 34').check_if_finished()
+        False
+        """
+        tile_list = []
         for j in range(self.n):
             for i in range(self.n):
                 tile = self.board[(i, j)]
@@ -96,7 +105,14 @@ class Board:
         return True
 
     def slide(self, tile):
+        """
+        >>> Board(3).slide((2, 1))
+        123
+        45
+        786
+        """
         gap = b.find_gap()
+        assert tile in self.possible_moves()
         self.board[tile], self.board[gap] = self.board[gap], self.board[tile]
         return self
 
