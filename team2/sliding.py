@@ -44,9 +44,9 @@ class Board:
         for j in range(self.n):
             res += indent
             for i in range(self.n):
-                number = self.board[(i,j)]
-                if number != self.gap_num:
-                    res += "%s" % (number + 1)
+                tile = self.board[(i,j)]
+                if tile != self.gap_num:
+                    res += "%s" % tile
                 else:
                     res += ' '
             res += "\n"
