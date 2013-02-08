@@ -1,10 +1,31 @@
+import math
 import pprint
 import random
 
 class Board:
 
-    def __init__(self, n, depth=0):
-        self.n = n
+    @classmethod
+    def from_string(cls, picture):
+        """
+        >>> Board.from_string('12 34') # doctest: +NORMALIZE_WHITESPACE
+        12
+        3
+        """
+        b = {}
+        i, j = 0, 0
+        for ch in picture:
+            if not ch.strip():
+                # new row
+                i = 0
+                j += 1
+            else:
+                # new tile
+                b[(i, j)] = int(ch)
+                i += 1
+        return cls(board=b)
+
+    def __init__(self, n=None, board=None, depth=0):
+        self.n = n or int(math.sqrt(len(board)))
         self.depth = depth
         self.board = dict(((i,j),j*n+i) for i in range(n) for j in range(n))
         self.gap_num = self.n**2 - 1
