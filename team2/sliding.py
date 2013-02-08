@@ -52,6 +52,14 @@ class Board:
             res += "\n"
         return res
 
+    def correct_answer(self, ij):
+        """
+        >>> Board(2).correct_answer((1, 0))
+        2
+        """
+        i, j = ij
+        return j*self.n + i + 1
+
     def find_gap(self):
         gap = None
         for j in  range(self.n):
@@ -88,8 +96,8 @@ class Board:
         number_list = []
         for j in range(self.n):
             for i in range(self.n):
-                number = self.board[(i, j)]
-                if number != j*self.n + i:
+                tile = self.board[(i, j)]
+                if tile != self.correct_answer((i, j)):
                     return False
         return True
 
