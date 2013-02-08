@@ -61,17 +61,11 @@ class Board:
         return j*self.n + i + 1
 
     def find_gap(self):
-        gap = None
-        for j in  range(self.n):
-            for i in range(self.n):
-                    pos = (i,j)
-                    if self.board[pos] == self.gap_num:
-                        gap = pos
-                        break
-            if gap is not None:
-                break
-        assert gap != None
-        return gap
+        """
+        >>> Board(2).find_gap()
+        (1, 1)
+        """
+        return [ij for (ij, tile) in self.board.items() if tile==self.gap_num][0]
 
 
     def possible_moves(self):
