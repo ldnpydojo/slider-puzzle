@@ -143,6 +143,22 @@ class Board:
         self.board[tile], self.board[gap] = self.board[gap], self.board[tile]
         return self
 
+    def score(self):
+        """
+
+        """
+        score = 0
+        correct_board = Board(board=self.correct_board())
+        for i in range(self.n):
+            for j in range(self.n):
+                tile = self.board[(i, j)]
+                if tile == self.gap_num:
+                    continue
+                correct_location = correct_board.find(tile)
+                dx = abs(i-correct_location[0])
+                dy = abs(j-correct_location[1])
+                score += dx+dy
+        return score
 
 
     def __eq__(self, other):
