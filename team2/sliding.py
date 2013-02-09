@@ -178,6 +178,10 @@ class Board:
         """
         return hash(self.tile_string())
 
+    def scramble(self, n):
+        for i in xrange(n):
+            move = random.choice(self.possible_moves())
+            self.slide(move)
 
 class Solver:
 
