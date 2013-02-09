@@ -111,8 +111,10 @@ class Board:
         if j < self.n-1:
             res.append((i, j+1))
         assert len(res) > 0
-
         return res
+
+    def possible_futures(self):
+        return dict((move, self.copy().slide(move)) for move in self.possible_moves())
 
     def check_if_finished(self):
         """
