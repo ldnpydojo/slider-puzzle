@@ -26,8 +26,8 @@ class Board:
 
     def __init__(self, n=None, board=None, depth=0):
         self.n = n or int(math.sqrt(len(board)))
+        self.board = board or self.correct_board()
         self.depth = depth
-        self.board = board or dict(((i,j), self.correct_answer((i,j))) for i in range(self.n) for j in range(self.n))
         self.gap_num = max(self.board.values())
 
     def copy(self):
@@ -52,13 +52,17 @@ class Board:
             res += "\n"
         return res
 
-    def correct_answer(self, ij):
+    def correct_tile(self, ij):
         """
-        >>> Board(2).correct_answer((1, 0))
+        >>> Board(2).correct_tile((1, 0))
         2
         """
         i, j = ij
         return j*self.n + i + 1
+
+    def correct_board(self):
+        return dict(((i,j), self.correct_tile((i,j))) for i in range(self.n) for j in range(self.n))
+
 
     def find_gap(self):
         """
