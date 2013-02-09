@@ -8,7 +8,7 @@ class Board:
     def from_string(cls, picture):
         """
         >>> Board.from_string('12 34') # doctest: +NORMALIZE_WHITESPACE
-        12
+        1 2
         3
         """
         b = {}
@@ -134,9 +134,9 @@ class Board:
     def slide(self, tile):
         """
         >>> Board(3).slide((2, 1)) # doctest: +NORMALIZE_WHITESPACE
-        123
-        45
-        786
+        1 2 3
+        4 5
+        7 8 6
         """
         gap = self.find_gap()
         assert tile in self.possible_moves()
