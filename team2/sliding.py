@@ -78,12 +78,19 @@ class Board:
         return dict(((i,j), self.correct_tile((i,j))) for i in range(self.n) for j in range(self.n))
 
 
+    def find(self, num):
+        """
+        >>> Board(2).find(2)
+        (1, 0)
+        """
+        return [ij for (ij, tile) in self.board.items() if tile==num][0]
+
     def find_gap(self):
         """
         >>> Board(2).find_gap()
         (1, 1)
         """
-        return [ij for (ij, tile) in self.board.items() if tile==self.gap_num][0]
+        return self.find(self.gap_num)
 
 
     def possible_moves(self):
