@@ -127,24 +127,41 @@ class Board:
         for j in range(self.n):
             for i in range(self.n):
                 tile = self.board[(i, j)]
-                if tile != self.correct_answer((i, j)):
+                if tile != self.correct_tile((i, j)):
                     return False
         return True
 
     def slide(self, tile):
         """
-        >>> Board(3).slide((2, 1))
+        >>> Board(3).slide((2, 1)) # doctest: +NORMALIZE_WHITESPACE
         123
         45
         786
         """
-        gap = b.find_gap()
+        gap = self.find_gap()
         assert tile in self.possible_moves()
         self.board[tile], self.board[gap] = self.board[gap], self.board[tile]
         return self
 
-    def hash(self):
-        return str(sorted(self.board.items()))
+
+
+    def __eq__(self, other):
+        """
+        >>> Board(3) == Board(3)
+        True
+        """
+        return self.tile_string() == other.tile_string()
+
+    def __hash__(self):
+        """
+        >>> b = Board(3)
+        >>> b in set([Board(4), Board(5)])
+        False
+        >>> b in set([Board(3), Board(5)])
+        True
+        """
+        return hash(self.tile_string())
+
 
 class Solver:
 
