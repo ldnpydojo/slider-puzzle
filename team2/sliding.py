@@ -194,27 +194,26 @@ class Solver:
 
         queue = [board]
         current = None
+        iterations = 0
         while len(queue):
+            iterations += 1
             current = queue[0]
+            print len(queue), 'boards to check'
+            print 'Score:', current.score()
             print current
-            print len(queue)
             queue = queue[1:]
 
             if current.check_if_finished():
                 print "board is finished"
                 break
-            current_hash = current.hash()
+            current_hash = hash(current)
             for move in current.possible_moves():
-                print move
+                # print move
                 new_board = current.copy().slide(move)
                 if current_hash in known or new_board in queue:
                     continue
                 queue.append(new_board)
             known[current_hash] = True
-        print current
-        print current.check_if_finished()
-
-
 
 if __name__ == "__main__":
     b = Board(3)
