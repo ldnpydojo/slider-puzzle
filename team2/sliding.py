@@ -222,3 +222,39 @@ def brute_force(n, eggs=10):
     b.scramble(eggs)
     s = Solver()
     s.solve(b)
+
+def a_star_search(n, eggs=999):
+    b = Board(n)
+    b.scramble(eggs)
+    start_score = b.score()
+    print 'Scrambled:'
+    print 'Score:', start_score
+    print b
+    done = set([b.tile_string()])
+    fails = 0
+    for i in range(362880):
+        futures = b.possible_futures()
+        unseen_futures = dict((mv, bd) for (mv, bd) in futures.items() if bd.tile_string() not in done)
+        if not unseen_futures:
+            done = set()
+            fails += 1
+            print 'no moves left! but keep trying!'
+            continue
+        move = min(unseen_futures.items(), key=lambda mv_bd:mv_bd[1].score()+random.uniform(0, 0.4))[0]
+        b.slide(move)
+        print '%s Score %s: %s/%s/%s' %(
+            i, b.score(), len(unseen_futures), len(futures), fails
+        )
+        print 'x'*b.score()
+        print b
+        if b.check_if_finished():
+            break
+        done.add(b.tile_string())
+    print 'Solved!' if b.check_if_finished() else 'Failed'
+    print 'From', start_score
+    print 'after', i, 'iterations'
+
+
+if __name__ == "__main__":
+    brute_force(3, 10)
+    a_star_search(3, 10)
