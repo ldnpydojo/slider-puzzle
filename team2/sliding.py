@@ -28,7 +28,7 @@ class Board:
         self.n = n or int(math.sqrt(len(board)))
         self.depth = depth
         self.board = board or dict(((i,j), self.correct_answer((i,j))) for i in range(self.n) for j in range(self.n))
-        self.gap_num = self.board[(self.n-1, self.n-1)]
+        self.gap_num = max(self.board.values())
 
     def copy(self):
         """
