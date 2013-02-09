@@ -38,17 +38,31 @@ class Board:
         """
         return Board(self.n, self.board.copy(), self.depth+1)
 
+    def tile_string(self):
+        """
+        >>> Board(3).tile_string()
+        '123456789'
+        """
+        return ''.join(str(ij_num[1])
+            for ij_num in
+                sorted(
+                    self.board.items(),
+                    key=lambda ij_num: list(reversed(ij_num[0]))
+                )
+            )
+
     def __repr__(self):
         indent = " "*self.depth
         res = ""
+        w = max(map(lambda x:len(str(x)), self.board.values()))+1
         for j in range(self.n):
             res += indent
             for i in range(self.n):
                 tile = self.board[(i,j)]
-                if tile != self.gap_num:
-                    res += "%s" % tile
-                else:
-                    res += ' '
+                if tile == self.gap_num:
+                    tile = ' '
+                res += ("%*s" % (w, tile))
+
             res += "\n"
         return res
 
