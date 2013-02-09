@@ -214,13 +214,11 @@ class Solver:
                     continue
                 queue.append(new_board)
             known[current_hash] = True
+        print 'after', iterations, 'iterations'
 
-if __name__ == "__main__":
-    b = Board(3)
-    for i in range(2):
-        moves = b.possible_moves()
-        b.slide(random.choice(moves))
-
+def brute_force(n, eggs=10):
+    b = Board(n)
+    print b
+    b.scramble(eggs)
     s = Solver()
-
     s.solve(b)
