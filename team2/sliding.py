@@ -199,12 +199,11 @@ class Solver:
             iterations += 1
             current = queue[0]
             print len(queue), 'boards to check'
-            print 'Score:', current.score()
+            print '(Score: %s)' % current.score()
             print current
             queue = queue[1:]
 
             if current.check_if_finished():
-                print "board is finished"
                 break
             current_hash = hash(current)
             for move in current.possible_moves():
@@ -214,21 +213,25 @@ class Solver:
                     continue
                 queue.append(new_board)
             known[current_hash] = True
-        print 'after', iterations, 'iterations'
 
-def brute_force(n, eggs=10):
+        print 'Solved!' if current.check_if_finished() else 'Failed'
+        print 'after', iterations, 'iterations\n'
+
+
+def get_scrambled_board(n, eggs=10):
     b = Board(n)
     print b
     b.scramble(eggs)
+    return b
+
+def brute_force(b):
     s = Solver()
     s.solve(b)
 
-def a_star_search(n, eggs=999):
-    b = Board(n)
-    b.scramble(eggs)
+def a_star_search(b):
     start_score = b.score()
     print 'Scrambled:'
-    print 'Score:', start_score
+    print 'Score: ', start_score
     print b
     done = set([b.tile_string()])
     fails = 0
@@ -256,5 +259,6 @@ def a_star_search(n, eggs=999):
 
 
 if __name__ == "__main__":
-    brute_force(3, 10)
-    a_star_search(3, 10)
+    b = get_scrambled_board(3, 99)
+    brute_force(b)
+    a_star_search(b)
