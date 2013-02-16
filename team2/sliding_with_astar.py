@@ -10,6 +10,8 @@ class Board:
         >>> Board.from_string('12 34') # doctest: +NORMALIZE_WHITESPACE
         1 2
         3
+        >>> Board.from_string('12 34').n
+        2
         """
         b = {}
         i, j = 0, 0
@@ -145,7 +147,12 @@ class Board:
 
     def score(self):
         """
-
+        >>> Board.from_string('12 43').score()
+        1
+        >>> Board.from_string('21 43').score()
+        3
+        >>> Board.from_string('923 456 781').score()
+        8
         """
         score = 0
         correct_board = Board(board=self.correct_board())
@@ -155,9 +162,9 @@ class Board:
                 if tile == self.gap_num:
                     continue
                 correct_location = correct_board.find(tile)
-                dx = abs(i-correct_location[0])
-                dy = abs(j-correct_location[1])
-                score += dx+dy
+                dx = abs(i-correct_location[0])**2
+                dy = abs(j-correct_location[1])**2
+                score += dx + dy
         return score
 
 
@@ -220,7 +227,6 @@ class Solver:
 
 def get_scrambled_board(n, eggs=10):
     b = Board(n)
-    print b
     b.scramble(eggs)
     return b
 
