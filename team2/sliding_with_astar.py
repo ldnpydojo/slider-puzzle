@@ -192,49 +192,11 @@ class Board:
             move = random.choice(self.possible_moves())
             self.slide(move)
 
-class Solver:
-
-    def __init__(self):
-        self.stack = []
-        self.known = {}
-
-    def solve(self, board):
-        known = {}
-
-        queue = [board]
-        current = None
-        iterations = 0
-        while len(queue):
-            iterations += 1
-            current = queue[0]
-            print len(queue), 'boards to check'
-            print '(Score: %s)' % current.score()
-            print current
-            queue = queue[1:]
-
-            if current.check_if_finished():
-                break
-            current_hash = hash(current)
-            for move in current.possible_moves():
-                # print move
-                new_board = current.copy().slide(move)
-                if current_hash in known or new_board in queue:
-                    continue
-                queue.append(new_board)
-            known[current_hash] = True
-
-        print 'Solved!' if current.check_if_finished() else 'Failed'
-        print 'after', iterations, 'iterations\n'
-
 
 def get_scrambled_board(n, eggs=10):
     b = Board(n)
     b.scramble(eggs)
     return b
-
-def brute_force(b):
-    s = Solver()
-    s.solve(b)
 
 def a_star_search(b):
     start_score = b.score()
@@ -284,6 +246,4 @@ def one_run():
         print 'seed was', seed
 
 if __name__ == "__main__":
-    b = get_scrambled_board(3, 99)
-    brute_force(b)
-    a_star_search(b)
+    one_run()
