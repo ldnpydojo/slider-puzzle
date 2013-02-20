@@ -1,6 +1,5 @@
+import os
 import sys
-import math
-import pprint
 import random
 from collections import defaultdict
 
@@ -12,22 +11,31 @@ def a_star_search(b):
     print 'Scrambled:'
     print 'Score: ', start_score
     print b
-    done = defaultdict(lambda: 0)
-    done[b.tile_string()] += 1
-    fails = 0
-    for i in range(1, 5001):
+    done = set([b.tile_string()])
+    horizon = defaultdict(list)
+    best_board = b
+    best_score = b.score()
+    worst_score = b.score()
+    for loop_num in range(1, 50001):
         futures = b.possible_futures()
         unseen_futures = dict((mv, bd) for (mv, bd) in futures.items() if bd.tile_string() not in done)
-        move = min(futures.items(),
-            key=lambda mv_bd:
-                mv_bd[1].score() + \
-                # penalise boards we've seen before
-                # testing shows 3 to be the most effective multiple here
-                3*done[mv_bd[1].tile_string()]
-            )[0]
-        b.slide(move)
-        print '%s Score %s/%s (%s chars of memory): %s/%s/%s' %(
-            i, b.score(), start_score, len(str(locals())), len(unseen_futures), len(futures), sum(done.values())
+        [horizon[bd.score()].append(bd) for (mv, bd) in unseen_futures.items()]
+
+        if not horizon:
+            print 'no moves on the horizon'
+            return
+        lowest_score, possible_tries = min((scr, bds) for (scr, bds) in horizon.items() if bds)
+
+        num_best = len(possible_tries)
+        b = possible_tries.pop(0)
+        score = b.score()
+        if score <= best_score:
+            best_score = score
+            best_board = b
+        worst_score = max(worst_score, score)
+        done.add(b.tile_string())
+        msg = '%3s Depth: %3s\nMoves:\n\tBest unseen %3s @ %3s\n\tHere %3s/%3s (best/new/seen)\n\tEverywhere %3s/%3s (horizon/done)\n\t(%s chars of memory)\nScore:\n\t%3s/%3s/%3s/%3s (score/best/start/worst)\n' %(
+            loop_num, b.depth, num_best, lowest_score, len(unseen_futures), len(futures), len(horizon), len(done),len(str(locals())), score, best_score, start_score, worst_score
         )
         print 'x'*b.score()
         print b
@@ -48,7 +56,7 @@ def one_run():
     """
     seed = ''.join(sys.argv[1:]) or str(random.randint(0, 99999))
     random.seed(seed)
-    b = get_scrambled_board(4, 99)
+    b = Board.get_scrambled(4, 99)
     try:
         return a_star_search(b)
     finally:

@@ -161,8 +161,8 @@ class Board:
                 correct_location = correct_board.find(tile)
                 if tile == self.gap_num:
                     # don't incentivise the gap to stay home all day!
-                    # if (i,j) == correct_location:
-                    #     score += 1
+                    if (i,j) == correct_location:
+                        score += 1
                     continue
                 dx = abs(i-correct_location[0])**2
                 dy = abs(j-correct_location[1])**2
