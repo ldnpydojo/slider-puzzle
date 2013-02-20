@@ -37,15 +37,22 @@ def a_star_search(b):
         msg = '%3s Depth: %3s\nMoves:\n\tBest unseen %3s @ %3s\n\tHere %3s/%3s (best/new/seen)\n\tEverywhere %3s/%3s (horizon/done)\n\t(%s chars of memory)\nScore:\n\t%3s/%3s/%3s/%3s (score/best/start/worst)\n' %(
             loop_num, b.depth, num_best, lowest_score, len(unseen_futures), len(futures), len(horizon), len(done),len(str(locals())), score, best_score, start_score, worst_score
         )
-        print 'x'*b.score()
-        print b
+        os.system('clear')
+        print msg
+        char_dict = {best_score:'<', score:'X', start_score:'^', worst_score:'>'}
+        print 'score:', ''.join(char_dict.get(i, '-') for i in range(worst_score+1))
+        print 'Current:\n', b
+        print
+        print 'Best yet:\nScore: ', best_score, '\n', best_board,
         if b.check_if_finished():
             break
-        done[b.tile_string()] += 1
+
+    print '\n'.join(b.history)
+    print msg
     print 'Solved!' if b.check_if_finished() else 'Failed'
     print 'From a starting distance of', start_score
-    print 'after', i, 'iterations'
-    return i
+    print 'after', b.depth+1, 'moves and', loop_num, 'iterations'
+    return loop_num
 
 def one_run():
     """
