@@ -34,13 +34,23 @@ def a_star_search(b):
             best_board = b
         worst_score = max(worst_score, score)
         done.add(b.tile_string())
-        msg = '%3s Depth: %3s\nMoves:\n\tBest unseen %3s @ %3s\n\tHere %3s/%3s (best/new/seen)\n\tEverywhere %3s/%3s (horizon/done)\n\t(%s chars of memory)\nScore:\n\t%3s/%3s/%3s/%3s (score/best/start/worst)\n' %(
-            loop_num, b.depth, num_best, lowest_score, len(unseen_futures), len(futures), len(horizon), len(done),len(str(locals())), score, best_score, start_score, worst_score
+        msg = """%2s) Depth: %2s
+Moves:
+\tBest unseen %2s @ %2s
+\tHere %2s/%2s (new/seen)
+\tEverywhere %2s/%2s (horizon/done)
+\t(%s chars of memory)\nScore:\n\t%2s/%2s/%2s/%2s (score/best/start/worst)
+""" %(
+        loop_num, b.depth,
+        num_best, lowest_score,
+        len(unseen_futures), len(futures),
+        len(horizon), len(done),
+        len(str(locals())), score, best_score, start_score, worst_score
         )
         os.system('clear')
         print msg
         char_dict = {best_score:'<', score:'X', start_score:'^', worst_score:'>'}
-        print 'score:', ''.join(char_dict.get(i, '-') for i in range(worst_score+1))
+        print 'Score:', ''.join(char_dict.get(i, '-') for i in range(worst_score+1))
         print 'Current:\n', b
         print
         print 'Best yet:\nScore: ', best_score, '\n', best_board,
